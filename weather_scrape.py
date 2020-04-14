@@ -1,10 +1,18 @@
 import requests
+import time 
+import os 
 import pandas as pd 
-from datetime import date
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
+
 class WeatherScraper():
+# A data scraper class for scraping data from the website set in self.driver.get
+# --------------------------------------------------------------------------------
+# Uses beautiful soup and selenium to parse through xpaths and finds the datas 
+# contained within the td tr tags. 
+# Gets the current working directory and saves a .csv file into a folder called data
+
     def __init__(self):
         self.driver = webdriver.Chrome() 
 
@@ -28,8 +36,9 @@ class WeatherScraper():
                 dict_list.append(data)
 
         df = pd.DataFrame(dict_list)
-        todays_date = date.today()
-        df.to_csv('data_' + str(todays_date) + '.csv')
+        todays_date = time.strftime("%Y%m%d-%H%M%S")
+        directory_file = cwd = os.getcwd() + '/data/' + f'data_{todays_date}.csv'
+        df.to_csv(directory_file)
 
         
         
