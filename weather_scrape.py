@@ -11,7 +11,7 @@ class WeatherScraper():
 # --------------------------------------------------------------------------------
 # Uses beautiful soup and selenium to parse through xpaths and finds the datas 
 # contained within the td tr tags. 
-# Gets the current working directory and saves a .csv file into a folder called data
+# Gets the current working directory and saves a .csv file into a subdirectory called data
 
     def __init__(self):
         self.driver = webdriver.Chrome() 
@@ -37,8 +37,12 @@ class WeatherScraper():
 
         df = pd.DataFrame(dict_list)
         todays_date = time.strftime("%Y%m%d-%H%M%S")
-        directory_file = cwd = os.getcwd() + '/data/' + f'data_{todays_date}.csv'
-        df.to_csv(directory_file)
+        directory = os.getcwd() + '/data/'
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        full_path = directory + f'data_{todays_date}.csv'
+        df.to_csv(full_path)
 
         
         
